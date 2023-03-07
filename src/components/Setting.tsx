@@ -31,7 +31,7 @@ export default function Setting(props: {
             }}
           />
         </SettingItem>
-        <SettingItem icon="i-carbon:user-online" label="系统角色指令">
+        <SettingItem icon="i-carbon:user-online" label="系統角色指令">
           <input
             type="text"
             value={props.setting().systemRule}
@@ -44,7 +44,7 @@ export default function Setting(props: {
             }}
           />
         </SettingItem>
-        <SettingItem icon="i-carbon:data-enrichment" label="思维发散程度">
+        <SettingItem icon="i-carbon:data-enrichment" label="思維散發程度">
           <input
             type="range"
             min={0}
@@ -63,7 +63,7 @@ export default function Setting(props: {
         </SettingItem>
         <SettingItem
           icon="i-carbon:save-image"
-          label="记录对话内容，刷新不会消失"
+          label="記錄對話內容，刷新不會消失"
         >
           <label class="relative inline-flex items-center cursor-pointer ml-1">
             <input
@@ -82,7 +82,7 @@ export default function Setting(props: {
         </SettingItem>
         <SettingItem
           icon="i-carbon:3d-curve-auto-colon"
-          label="开启连续对话，将加倍消耗 Token"
+          label="開啟連續對話，將加倍消耗 Token"
         >
           <label class="relative inline-flex items-center cursor-pointer ml-1">
             <input
@@ -109,7 +109,7 @@ export default function Setting(props: {
           }}
         >
           <button class="i-carbon:settings" />
-          <span ml-1>设置</span>
+          <span ml-1>設置</span>
         </div>
         <div class="flex">
           <div
@@ -124,7 +124,7 @@ export default function Setting(props: {
             onClick={props.clear}
           >
             <button class="i-carbon:trash-can" />
-            <span ml-1>清空对话</span>
+            <span ml-1>清空對話</span>
           </div>
         </div>
       </div>

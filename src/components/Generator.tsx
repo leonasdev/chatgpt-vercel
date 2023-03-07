@@ -176,7 +176,7 @@ export default function () {
     }
     const data = response.body
     if (!data) {
-      throw new Error("没有返回数据")
+      throw new Error("沒有返回數據")
     }
     const reader = data.getReader()
     const decoder = new TextDecoder("utf-8")
@@ -281,7 +281,7 @@ export default function () {
             <textarea
               ref={inputRef!}
               id="input"
-              placeholder="与 ta 对话吧"
+              placeholder="與他對話"
               autocomplete="off"
               value={inputContent()}
               autofocus
@@ -350,7 +350,7 @@ export default function () {
               }}
             >
               <button
-                title="发送"
+                title="發送"
                 onClick={() => handleButtonClick()}
                 class="i-carbon:send-filled text-5 mx-3 hover:text-slate-2"
               />

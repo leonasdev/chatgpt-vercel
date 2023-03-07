@@ -5,7 +5,7 @@ export default function Clipboard(props: { message: string }) {
   const [copied, setCopied] = createSignal(false)
   return (
     <button
-      title="复制"
+      title="複製"
       classList={{
         copied: copied(),
         copy: true,
