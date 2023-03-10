@@ -1,10 +1,46 @@
-<header>
-  <img src="/favicon.svg" width="100px" />
-  <div class="flex items-center mt-4">
+---
+import Logo from "./Logo.astro"
+import ThemeToggle from "./ThemeToggle.astro"
+---
+
+<header class="before">
+  <div class="flex justify-between items-center">
+    <span class="w-100px logo">
+      <Logo />
+    </span>
+    <ThemeToggle />
+  </div>
+  <div class="flex items-center mt-4 text-2xl title">
     <span
-      class="text-2xl text-transparent font-extrabold bg-clip-text bg-gradient-to-r from-yellow-300 to-red-700 mr-1"
+      class="text-transparent font-extrabold bg-clip-text bg-gradient-to-r from-yellow-300 to-red-700 mr-1"
       >ChatGPT</span
     >
-    <span class="ml-1 text-2xl font-extrabold text-slate">Vercel</span>
+    <span class="ml-1 font-extrabold text-slate-7 dark:text-slate">Vercel</span>
   </div>
 </header>
+
+<style is:inline>
+  .title,
+  .logo {
+    transition: all 1s ease-in-out;
+  }
+
+  .before .logo {
+    width: 200px;
+    margin-top: 200px;
+  }
+
+  .before .title {
+    font-size: 2em;
+  }
+
+  #themeToggle {
+    border: 0;
+    transition: opacity 1s ease-in-out;
+    opacity: 1;
+  }
+
+  .before #themeToggle {
+    opacity: 0;
+  }
+</style>

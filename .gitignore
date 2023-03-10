@@ -4,3 +4,5 @@ yarn-error.log
 .idea/
 .vercel
 .DS_Store
+src/temp.ts
+dist
