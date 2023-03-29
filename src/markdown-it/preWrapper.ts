@@ -1,6 +1,6 @@
 import type MarkdownIt from "markdown-it"
 
-export function preWrapperPlugin(md: MarkdownIt) {
+export default function preWrapperPlugin(md: MarkdownIt) {
   const fence = md.renderer.rules.fence!
   md.renderer.rules.fence = (...args) => {
     const [tokens, idx] = args
@@ -12,7 +12,7 @@ export function preWrapperPlugin(md: MarkdownIt) {
     const rawCode = fence(...args)
     return rawCode.replace(
       "<pre>",
-      `<pre style="position: relative"><span class="lang">${lang}</span><button title="Copy Code" class="code-copy copy"></button>`
+      `<pre style="position: relative"><span class="lang">${lang}</span><button title="Copy Code" class="copy"></button>`
     )
   }
 }

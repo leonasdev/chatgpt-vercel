@@ -1,5 +1,12 @@
-import { createEffect, createSignal, For, onCleanup, onMount } from "solid-js"
-import type { PromptItem } from "./Generator"
+import {
+  createEffect,
+  createSignal,
+  For,
+  type JSXElement,
+  onMount
+} from "solid-js"
+import { makeEventListener } from "@solid-primitives/event-listener"
+import type { PromptItem } from "~/types"
 
 export default function PromptList(props: {
   prompts: PromptItem[]
@@ -8,15 +15,6 @@ export default function PromptList(props: {
   let containerRef: HTMLUListElement
   const [hoverIndex, setHoverIndex] = createSignal(0)
   const [maxHeight, setMaxHeight] = createSignal("320px")
-  function listener(e: KeyboardEvent) {
-    if (e.key === "ArrowDown") {
-      setHoverIndex(hoverIndex() + 1)
-    } else if (e.key === "ArrowUp") {
-      setHoverIndex(hoverIndex() - 1)
-    } else if (e.key === "Enter") {
-      props.select(props.prompts[hoverIndex()].prompt)
-    }
-  }
 
   createEffect(() => {
     if (hoverIndex() < 0) {
@@ -38,10 +36,20 @@ export default function PromptList(props: {
   })
 
   onMount(() => {
-    window.addEventListener("keydown", listener)
-  })
-  onCleanup(() => {
-    window.removeEventListener("keydown", listener)
+    makeEventListener(
+      window,
+      "keydown",
+      e => {
+        if (e.key === "ArrowDown") {
+          setHoverIndex(hoverIndex() + 1)
+        } else if (e.key === "ArrowUp") {
+          setHoverIndex(hoverIndex() - 1)
+        } else if (e.key === "Enter") {
+          props.select(props.prompts[hoverIndex()].prompt)
+        }
+      },
+      { passive: true }
+    )
   })
 
   return (
@@ -77,6 +85,43 @@ function Item(props: {
       ref.scrollIntoView({ block: "center" })
     }
   })
+  let DescComponent: JSXElement = props.prompt.desc
+  let PromptComponent: JSXElement = props.prompt.prompt
+  if (props.prompt.positions?.size) {
+    const descLen = props.prompt.desc.length
+    const descRange = [0, descLen - 1]
+    const promptRange = [descLen + 1, props.prompt.prompt.length - 1]
+    const { desc, prompt } = Array.from(props.prompt.positions).reduce(
+      (acc, cur) => {
+        if (cur >= descRange[0] && cur <= descRange[1]) {
+          acc.desc.push(cur)
+        } else if (cur >= promptRange[0] && cur <= promptRange[1]) {
+          acc.prompt.push(cur)
+        }
+        return acc
+      },
+      {
+        desc: [] as number[],
+        prompt: [] as number[]
+      }
+    )
+    if (desc) {
+      DescComponent = props.prompt.desc.split("").map((c, i) => {
+        if (desc.includes(i)) {
+          return <b class="dark:text-slate-2 text-black">{c}</b>
+        }
+        return c
+      })
+    }
+    if (prompt) {
+      PromptComponent = props.prompt.prompt.split("").map((c, i) => {
+        if (prompt.includes(i + descLen + 2)) {
+          return <b class="dark:text-slate-2 text-black">{c}</b>
+        }
+        return c
+      })
+    }
+  }
   return (
     <li
       ref={ref!}
@@ -89,8 +134,8 @@ function Item(props: {
         props.select(props.prompt.prompt)
       }}
     >
-      <p>{props.prompt.desc}</p>
-      <p class="text-0.4em">{props.prompt.prompt}</p>
+      <p>{DescComponent}</p>
+      <p class="text-0.4em">{PromptComponent}</p>
     </li>
   )
 }

@@ -1,8 +1,9 @@
 <button
   id="themeToggle"
   class="flex items-center justify-center w-10 h-10 rounded-md border transition-colors hover:bg-slate/10"
+  onclick="handleToggleTheme()"
 >
-  <svg width="1.2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <svg width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path
       class="sun"
       fill-rule="evenodd"
@@ -27,26 +28,29 @@
     fill: transparent;
   }
   :global(html.dark) .moon {
-    fill: white;
+    fill: grey;
   }
 </style>
 
 <script is:inline>
   const persistentTheme = localStorage.getItem("theme")
   const darkSchema = window.matchMedia("(prefers-color-scheme: dark)")
+  function toggle(flag) {
+    document.documentElement.classList.toggle("dark", flag)
+    document
+      .querySelector('meta[name="theme-color"]')
+      .setAttribute("content", flag ? "#16161a" : "#f6f8fa")
+  }
 
   function listener() {
-    document.documentElement.classList.toggle("dark", darkSchema?.matches)
+    toggle(darkSchema?.matches)
   }
 
   if (persistentTheme) {
-    document.documentElement.classList.toggle(
-      "dark",
-      persistentTheme === "dark"
-    )
+    toggle(persistentTheme === "dark")
   } else {
     darkSchema.addEventListener("change", listener)
-    document.documentElement.classList.toggle("dark", darkSchema?.matches)
+    toggle(darkSchema?.matches)
   }
 
   function handleToggleTheme() {
@@ -54,11 +58,10 @@
     element.classList.toggle("dark")
 
     const isDark = element.classList.contains("dark")
+    document
+      .querySelector('meta[name="theme-color"]')
+      .setAttribute("content", isDark ? "#16161a" : "#f6f8fa")
     darkSchema.removeEventListener("change", listener)
     localStorage.setItem("theme", isDark ? "dark" : "light")
   }
-
-  document
-    .getElementById("themeToggle")
-    ?.addEventListener("click", handleToggleTheme)
 </script>
